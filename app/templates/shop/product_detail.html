@@ -1,0 +1,80 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{{ url_for('shop.index') }}">Каталог</a></li>
+            <li class="breadcrumb-item active">{{ product.category.name }}</li>
+        </ol>
+    </nav>
+
+    <div class="row">
+        <div class="col-md-6 mb-4">
+            <div class="card">
+                {% if product.image_path %}
+                    {# Убираем 'static/' из пути, так как url_for('static') сам его добавит #}
+                    <img src="{{ url_for('static', filename=product.image_path.replace('static/', '')) }}" 
+                        class="img-fluid rounded shadow-sm" 
+                        alt="{{ product.name }}"
+                        style="max-height: 500px; object-fit: contain;">
+                {% else %}
+                    <img src="{{ url_for('static', filename='product_images/default.jpg') }}" 
+                        class="img-fluid rounded shadow-sm" 
+                        alt="Изображение отсутствует">
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <h1 class="display-5 fw-bold">{{ product.name }}</h1>
+            <p class="text-muted">Артикул: <span class="badge bg-secondary">{{ product.sku }}</span></p>
+            
+            <div class="d-flex align-items-center mb-3">
+                <span class="me-2 text-muted">Бренд:</span>
+                <span class="badge bg-info text-dark">{{ product.brand.name }}</span>
+            </div>
+
+            <hr>
+
+            <h3 class="text-primary mb-4">{{ product.price }} руб.</h3>
+
+            <div class="mb-4">
+                <h5>Описание:</h5>
+                <p class="lead">
+                    {% if product.description %}
+                        {{ product.description }}
+                    {% else %}
+                        Описание для данного товара пока не добавлено.
+                    {% endif %}
+                </p>
+            </div>
+
+            <div class="d-grid gap-2">
+                <a href="{{ url_for('shop.add_to_cart', product_id=product.id) }}" class="btn btn-primary btn-lg">
+                    <i class="bi bi-cart-plus"></i> Добавить в корзину
+                </a>
+                <a href="{{ url_for('shop.index') }}" class="btn btn-outline-secondary">
+                    Вернуться к покупкам
+                </a>
+            </div>
+        </div>
+    </div>
+
+    {% if product.car %}
+    <div class="row mt-5">
+        <div class="col-12">
+            <h3>Совместимые автомобили</h3>
+            <ul class="list-group list-group-flush">
+                {% for c in product.car %}
+                <li class="list-group-item">
+                    <i class="bi bi-check-circle-fill text-success"></i> 
+                    {{ c.make }} {{ c.model }} ({{ c.year }})
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

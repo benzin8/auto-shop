@@ -1,0 +1,69 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+<div class="container mb-5">
+    <div class="p-5 mb-4 bg-dark text-white rounded-5 shadow-lg position-relative overflow-hidden" 
+         style="background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.5)), url('https://images.unsplash.com/photo-1486006920555-c77dcf18193c?q=80&w=2000&auto=format&fit=crop'); background-size: cover; background-position: center;">
+        <div class="row py-5 position-relative" style="z-index: 2;">
+            <div class="col-md-8">
+                <h1 class="display-4 fw-bold text-uppercase">Запчасти для твоего <span class="text-primary">авто</span></h1>
+                <p class="fs-5 mb-4 opacity-75">Оригинальные детали и качественные аналоги с гарантией и быстрой доставкой.</p>
+                <div class="d-grid gap-2 d-md-flex justify-content-md-start">
+                    <a href="{{ url_for('shop.index') }}" class="btn btn-primary btn-lg px-5 rounded-pill shadow">Перейти к покупкам</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container mb-5">
+    <div class="row g-3 text-center">
+        {% for icon, title in [('shield-check', 'Гарантия'), ('truck', 'Доставка'), ('headset', 'Поддержка')] %}
+        <div class="col-md-4">
+            <div class="d-flex align-items-center justify-content-center p-3 bg-white rounded-4 shadow-sm border border-light">
+                <i class="bi bi-{{ icon }} text-primary fs-3 me-3"></i>
+                <h6 class="fw-bold mb-0">{{ title }}</h6>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<div class="container mb-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h3 class="fw-bold mb-0">Популярное</h3>
+        <a href="{{ url_for('shop.index') }}" class="btn btn-sm btn-outline-dark rounded-pill px-3">
+            Смотреть всё <i class="bi bi-arrow-right ms-1"></i>
+        </a>
+    </div>
+
+    <div class="row row-cols-1 row-cols-md-4 g-4">
+        {% for product in products[:4] %}
+        <div class="col">
+            <div class="card h-100 border-0 shadow-sm product-card overflow-hidden">
+                <a href="{{ url_for('shop.product_detail', product_id=product.id) }}">
+                    <img src="{{ product.image_path or 'https://via.placeholder.com/300x200?text=' ~ product.name }}" class="card-img-top" alt="{{ product.name }}">
+                </a>
+                <div class="card-body p-3">
+                    <h6 class="fw-bold mb-1">
+                        <a href="{{ url_for('shop.product_detail', product_id=product.id) }}" class="text-dark text-decoration-none hover-white">
+                            {{ product.name }}
+                        </a>
+                    </h6>
+                    <p class="text-muted small mb-3">{{ product.price }} ₽</p>
+                    <a href="{{ url_for('shop.add_to_cart', product_id=product.id) }}" class="btn btn-primary btn-sm w-100 rounded-pill">
+                        В корзину
+                    </a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<style>
+    .hover-white:hover { color: white !important; transition: 0.3s; }
+    .product-card { transition: transform 0.2s; }
+    .product-card:hover { transform: translateY(-5px); }
+</style>
+{% endblock %}

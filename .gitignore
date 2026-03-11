@@ -1,0 +1,34 @@
+# --- Системные файлы Python ---
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.venv
+venv/
+ENV/
+env/
+
+# --- Настройки среды разработки (VS Code) ---
+.vscode/
+.idea/
+
+# --- Файлы базы данных (локальные) ---
+# Исключаем локальную БД, чтобы она не перезаписывалась при переносе кода
+instance/
+*.db
+*.sqlite3
+
+# --- Загрузки и медиа ---
+# Если ты хочешь, чтобы папка была в гите, но пустая, добавь в неё файл .gitkeep
+# Но сами загруженные картинки товаров обычно игнорируют
+app/core/static/product_images/*
+!app/core/static/product_images/.gitkeep
+
+# --- Секретные данные ---
+*.env
+.flaskenv
+secrets.py
+
+# --- Прочее ---
+.DS_Store
+*.log

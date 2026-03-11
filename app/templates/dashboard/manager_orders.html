@@ -1,0 +1,58 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+<div class="container py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2><i class="bi bi-box-seam me-2"></i>Панель менеджера</h2>
+        <span class="badge bg-dark">Всего заказов: {{ orders|length }}</span>
+    </div>
+
+    <div class="table-responsive">
+        <table class="table table-hover border shadow-sm">
+            <thead class="table-light">
+                <tr>
+                    <th>Заказ</th>
+                    <th>Клиент и Контакты</th>
+                    <th>Состав заказа</th>
+                    <th>Сумма</th>
+                    <th>Статус</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for order in orders %}
+                <tr>
+                    <td>
+                        <span class="fw-bold">#{{ order.id }}</span><br>
+                        <small class="text-muted">{{ order.created_at.strftime('%d.%m %H:%M') }}</small>
+                    </td>
+                    <td>
+                        <div><strong>{{ order.owner.username }}</strong></div>
+                        <div class="small"><i class="bi bi-telephone"></i> {{ order.phone }}</div>
+                        <div class="small text-muted"><i class="bi bi-geo-alt"></i> {{ order.address }}</div>
+                    </td>
+                    <td>
+                        <ul class="list-unstyled mb-0 small">
+                            {% for item in order.items %}
+                            <li>• {{ item.product.name }} <span class="text-muted">({{ item.quantity }} шт.)</span></li>
+                            {% endfor %}
+                        </ul>
+                    </td>
+                    <td class="fw-bold text-primary">{{ order.total_price }} ₽</td>
+                    <td>
+                        <form action="{{ url_for('dashboard.update_order_status', order_id=order.id) }}" method="POST" class="d-flex gap-1">
+                            <select name="status" class="form-select form-select-sm" style="width: 130px;">
+                                <option value="pending" {% if order.status == 'pending' %}selected{% endif %}>Новый</option>
+                                <option value="processing" {% if order.status == 'processing' %}selected{% endif %}>В работе</option>
+                                <option value="completed" {% if order.status == 'completed' %}selected{% endif %}>Завершен</option>
+                                <option value="canceled" {% if order.status == 'canceled' %}selected{% endif %}>Отменен</option>
+                            </select>
+                            <button type="submit" class="btn btn-sm btn-success"><i class="bi bi-check-lg"></i></button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}
