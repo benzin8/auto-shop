@@ -23,6 +23,7 @@ instance/
 # Но сами загруженные картинки товаров обычно игнорируют
 app/core/static/product_images/*
 !app/core/static/product_images/.gitkeep
+.claude/
 
 # --- Секретные данные ---
 *.env

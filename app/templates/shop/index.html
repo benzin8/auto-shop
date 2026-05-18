@@ -22,7 +22,7 @@
                     </h5>
                     <p class="card-text text-muted small mb-1">Артикул: {{ product.sku }}</p>
                     <p class="card-text text-muted small">Бренд: {{ product.brand.name }}</p>
-                    <p class="card-text flex-grow-1">{{ product.description[:100] }}...</p>
+                    <p class="card-text flex-grow-1">{{ (product.description or '')[:100] }}{% if product.description and product.description|length > 100 %}...{% endif %}</p>
                     <p class="card-text text-primary fs-5"><strong>{{ product.price }} руб.</strong></p>
                     
                     <div class="d-grid gap-2 mt-auto" style="position: relative; z-index: 2;">
